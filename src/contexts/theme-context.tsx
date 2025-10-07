@@ -1,8 +1,8 @@
-import { createContext } from "react"
+import { createContext, useContext } from "react"
 
-type Theme = "light" | "dark"
+export type Theme = "light" | "dark"
 
-interface ThemeContextType {
+type ThemeContextType = {
 	theme: Theme
 	toggleTheme: () => void
 	isDarkMode: boolean
@@ -11,3 +11,11 @@ interface ThemeContextType {
 export const ThemeContext = createContext<ThemeContextType | undefined>(
 	undefined,
 )
+
+export function useTheme() {
+	const context = useContext(ThemeContext)
+	if (context === undefined) {
+		throw new Error("useTheme must be used within a ThemeProvider")
+	}
+	return context
+}

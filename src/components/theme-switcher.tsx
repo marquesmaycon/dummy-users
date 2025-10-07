@@ -1,7 +1,7 @@
 import { MoonOutlined, SunOutlined } from "@ant-design/icons"
 import { Button } from "antd"
+import { useTheme } from "../contexts/theme-context"
 
-import { useTheme } from "../hooks/theme"
 
 export default function ThemeSwitcher() {
 	const { toggleTheme, isDarkMode } = useTheme()
