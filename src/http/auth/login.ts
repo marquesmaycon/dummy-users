@@ -1,11 +1,13 @@
+import Cookies from "js-cookie"
+
 import { dummyApi } from "../../libs/dummy-api"
 
-type LoginRequest = {
-	email: string
+export type LoginRequest = {
+	username: string
 	password: string
 }
 
-type LoginResponse = {
+export type LoginResponse = {
 	id: number
 	username: string
 	email: string
@@ -19,5 +21,8 @@ type LoginResponse = {
 
 export async function login(data: LoginRequest) {
 	const resp = await dummyApi.post<LoginResponse>("/auth/login", data)
-	return resp.data
+	const { accessToken, refreshToken } = resp.data
+
+	Cookies.set("accessToken", accessToken, { expires: 1 / 144, path: "/" })
+	Cookies.set("refreshToken", refreshToken, { expires: 1 / 144, path: "/" })
 }
