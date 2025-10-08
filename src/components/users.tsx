@@ -1,3 +1,4 @@
+import { PlusOutlined } from "@ant-design/icons"
 import { Button, Flex, Typography } from "antd"
 import { useState } from "react"
 
@@ -30,6 +31,7 @@ export default function Users() {
 					}
 				>
 					Cadastrar
+					<PlusOutlined />
 				</Button>
 			</Flex>
 			<UsersList

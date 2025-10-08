@@ -1,4 +1,5 @@
-import { Button, Space, Table, type TableProps, Tag } from "antd"
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons"
+import { Avatar, Button, Space, Table, type TableProps, Tag } from "antd"
 import { useMemo, useState } from "react"
 import { Link } from "react-router"
 
@@ -17,6 +18,12 @@ type DeleteModalState = {
 	name: string | null
 }
 
+const roleMetaColors: Record<User["role"], { color: string; label: string }> = {
+	admin: { color: "red", label: "Administrador" },
+	user: { color: "green", label: "Usuário" },
+	moderator: { color: "gray", label: "Moderador" },
+}
+
 export default function UsersList({ onEditClick }: UsersListProps) {
 	const { role } = useAuthContext()
 	const isAdmin = role === "admin"
@@ -31,7 +38,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 		page: 1,
 		pageSize: 10,
 	})
-	
+
 	const { data, isLoading, isFetching } = useUsers({
 		limit: pageSize,
 		skip: (page - 1) * pageSize,
@@ -41,42 +48,63 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 	const columns: TableProps<User>["columns"] = useMemo(() => {
 		return [
 			{
-				title: "Full Name",
-				dataIndex: "name",
-				key: "name",
-				render: (_, record) => `${record.firstName} ${record.lastName}`,
+				title: "ID",
+				dataIndex: "id",
+				key: "id",
+				width: 10,
 			},
 			{
-				title: "Age",
-				dataIndex: "age",
-				key: "age",
+				title: "Nome",
+				dataIndex: "name",
+				key: "name",
+				render: (_, { firstName, lastName, image }) => {
+					return (
+						<Space>
+							<Avatar src={image} />
+							<span>{`${firstName} ${lastName}`}</span>
+						</Space>
+					)
+				},
 			},
+
 			{
 				title: "E-mail",
 				dataIndex: "email",
 				key: "email",
 			},
 			{
-				title: "Role",
+				title: "Telefone",
+				dataIndex: "phone",
+				key: "phone",
+			},
+			{
+				title: "Idade",
+				dataIndex: "age",
+				key: "age",
+			},
+			{
+				title: "Permissão",
 				dataIndex: "role",
 				key: "role",
 				render: (_, { role }) => {
-					const color =
-						role === "admin" ? "red" : role === "user" ? "green" : "gray"
+					const { color, label } = roleMetaColors[role]
 					return (
 						<Tag color={color} key={role}>
-							{role.toUpperCase()}
+							{label.toUpperCase()}
 						</Tag>
 					)
 				},
 			},
 			{
-				title: "Actions",
+				title: "Ações",
 				key: "actions",
+				align: "right",
 				render: (_, { id, firstName, lastName }) => (
 					<Space align="center" size="middle">
 						<Link to={`/dashboard/users/${id}`}>
-							<Button>View</Button>
+							<Button>
+								Ver <EyeOutlined />
+							</Button>
 						</Link>
 						{isAdmin && (
 							<>
@@ -85,7 +113,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 									variant="filled"
 									onClick={() => onEditClick(id)}
 								>
-									Edit
+									Editar <EditOutlined />
 								</Button>
 								<Button
 									danger
@@ -97,7 +125,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 										})
 									}
 								>
-									Delete
+									Excluir <DeleteOutlined />
 								</Button>
 							</>
 						)}
@@ -121,6 +149,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 					pageSizeOptions: ["10", "20", "50"],
 					showTotal: (total) => `Total ${total} items`,
 				}}
+				scroll={{ x: "max-content" }}
 			/>
 			<DeleteUserModal
 				open={open}

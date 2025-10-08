@@ -1,4 +1,14 @@
-import { Alert, Flex, Form, Input, Modal, message, Spin } from "antd"
+import {
+	Alert,
+	DatePicker,
+	Flex,
+	Form,
+	Input,
+	InputNumber,
+	Modal,
+	message,
+	Spin,
+} from "antd"
 import { useEffect } from "react"
 
 import { useAddUser, useUpdateUser, useUser } from "../hooks/user"
@@ -116,6 +126,37 @@ export default function UserFormModal({
 							},
 						]}
 					>
+						<Input />
+					</Form.Item>
+					<Form.Item<AddUserRequest> label="Telefone" name="phone">
+						<Input />
+					</Form.Item>
+					<Form.Item<AddUserRequest> label="Nome de Usuário" name="username">
+						<Input />
+					</Form.Item>
+					<Form.Item<AddUserRequest>
+						label="Data de nascimento"
+						name="birthDate"
+					>
+						<DatePicker />
+					</Form.Item>
+					<Form.Item<AddUserRequest>
+						label="Imagem"
+						name="image"
+						rules={[{ type: "url", message: "Please enter a valid URL!" }]}
+					>
+						<Input />
+					</Form.Item>
+					<Form.Item<AddUserRequest> label="Grupo sanguíneo" name="bloodGroup">
+						<Input />
+					</Form.Item>
+					<Form.Item<AddUserRequest> label="Altura" name="height">
+						<InputNumber min={0} />
+					</Form.Item>
+					<Form.Item<AddUserRequest> label="Peso" name="weight">
+						<InputNumber min={0} />
+					</Form.Item>
+					<Form.Item<AddUserRequest> label="Cor dos olhos" name="eyeColor">
 						<Input />
 					</Form.Item>
 				</Form>
