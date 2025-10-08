@@ -39,7 +39,9 @@ export default function Users() {
 			/>
 			<UserFormModal
 				{...userModal}
-				onCancel={() => setUserModal((prev) => ({ ...prev, open: false }))}
+				onCancel={() =>
+					setUserModal((prev) => ({ ...prev, open: false, userId: null }))
+				}
 			/>
 		</div>
 	)

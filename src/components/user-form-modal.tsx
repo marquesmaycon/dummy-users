@@ -1,7 +1,10 @@
-import { Button, Flex, Form, Input, Modal, Spin } from "antd"
+import { Alert, Flex, Form, Input, Modal, Spin } from "antd"
+import { useEffect } from "react"
+
 import { useAddUser, useUpdateUser, useUser } from "../hooks/user"
 import type { AddUserRequest } from "../http/user"
 import type { User } from "../libs/dummy-api"
+import { getAxiosErrorMessage } from "../utils/get-axios-error-message"
 import type { UserModalState } from "./users"
 
 type UserFormProps = UserModalState & {
@@ -15,24 +18,55 @@ export default function UserFormModal({
 	onCancel,
 }: UserFormProps) {
 	const isEdit = mode === "edit"
+
+	const [form] = Form.useForm<User>()
 	const { data: user, isLoading } = useUser(userId)
 
-	const { mutateAsync: addUser, isPending: isAdding } = useAddUser()
-	const { mutateAsync: updateUser, isPending: isUpdating } =
-		useUpdateUser(userId)
+	const {
+		mutateAsync: add,
+		isPending: isAdding,
+		error: addError,
+	} = useAddUser()
+	const {
+		mutateAsync: update,
+		isPending: isUpdating,
+		error: updateError,
+	} = useUpdateUser(userId)
+
+	useEffect(() => {
+		if (isEdit && user) {
+			form.setFieldsValue(user)
+		}
+	}, [form, user, isEdit])
 
 	const handleFinish = async (values: AddUserRequest) => {
-		return isEdit ? await updateUser(values) : await addUser(values)
+		if (isEdit) {
+			await update(values)
+		} else {
+			await add(values)
+		}
+		onCancel()
+	}
+
+	const clearAndCancel = () => {
+		form.resetFields()
+		onCancel()
 	}
 
 	const isPending = isAdding || isUpdating
+	const error = addError || updateError
 
 	return (
 		<Modal
 			title="Title"
 			open={open}
 			confirmLoading={isPending}
-			onCancel={onCancel}
+			onCancel={clearAndCancel}
+			okButtonProps={{
+				onClick: async () => {
+					form.submit()
+				},
+			}}
 		>
 			{isEdit && isLoading ? (
 				<Flex style={{ minHeight: 210 }} align="center" justify="center">
@@ -40,13 +74,21 @@ export default function UserFormModal({
 				</Flex>
 			) : (
 				<Form<User>
+					form={form}
 					name="basic"
 					labelCol={{ span: 8 }}
 					wrapperCol={{ span: 16 }}
 					style={{ maxWidth: 600 }}
-					initialValues={user}
 					onFinish={handleFinish}
 				>
+					{error && (
+						<Alert
+							message={getAxiosErrorMessage(error) || "Unknown error"}
+							type="error"
+							showIcon
+							style={{ marginBottom: "1rem" }}
+						/>
+					)}
 					<Form.Item<AddUserRequest>
 						label="Nome"
 						name="firstName"
@@ -81,11 +123,11 @@ export default function UserFormModal({
 					>
 						<Input />
 					</Form.Item>
-					<Form.Item key="submit" label={null}>
+					{/* <Form.Item key="submit" label={null}>
 						<Button type="primary" htmlType="submit" loading={isPending}>
 							Submit
 						</Button>
-					</Form.Item>
+					</Form.Item> */}
 				</Form>
 			)}
 		</Modal>
