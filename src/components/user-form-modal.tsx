@@ -45,7 +45,7 @@ export default function UserFormModal({
 		} else {
 			await add(values)
 		}
-		onCancel()
+		clearAndCancel()
 	}
 
 	const clearAndCancel = () => {
@@ -62,11 +62,7 @@ export default function UserFormModal({
 			open={open}
 			confirmLoading={isPending}
 			onCancel={clearAndCancel}
-			okButtonProps={{
-				onClick: async () => {
-					form.submit()
-				},
-			}}
+			okButtonProps={{ onClick: () => form.submit() }}
 		>
 			{isEdit && isLoading ? (
 				<Flex style={{ minHeight: 210 }} align="center" justify="center">
