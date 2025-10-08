@@ -20,9 +20,12 @@ export type LoginResponse = {
 }
 
 export async function login(data: LoginRequest) {
-	const resp = await dummyApi.post<LoginResponse>("/auth/login", data)
+	const resp = await dummyApi.post<LoginResponse>("/auth/login", {
+		...data,
+		expiresInMins: 10,
+	})
 	const { accessToken, refreshToken } = resp.data
 
-	Cookies.set("accessToken", accessToken, { expires: 1 / 144, path: "/" })
-	Cookies.set("refreshToken", refreshToken, { expires: 1 / 144, path: "/" })
+	Cookies.set("accessToken", accessToken, { path: "/" })
+	Cookies.set("refreshToken", refreshToken, { path: "/" })
 }

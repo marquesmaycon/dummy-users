@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 
 import { login } from "../http/auth/login"
-import { type MeRequest, me } from "../http/auth/me"
 import { refresh } from "../http/auth/refresh"
+import { me } from "../http/user/me"
 
 export const useLogin = () => {
 	return useMutation({
@@ -10,10 +10,10 @@ export const useLogin = () => {
 	})
 }
 
-export const useMe = (data: MeRequest) => {
+export const useMe = () => {
 	return useQuery({
 		queryKey: ["me"],
-		queryFn: () => me(data),
+		queryFn: me,
 	})
 }
 
