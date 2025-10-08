@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router"
 
 import { queryClient } from "../libs/tanstack-query"
 import { AntdConfigProvider } from "./antd-config-provider"
+import { AuthProvider } from "./auth-provider"
 import { ThemeProvider } from "./theme-provider"
 
 export default function AppProvider({
@@ -13,9 +14,11 @@ export default function AppProvider({
 	return (
 		<BrowserRouter>
 			<QueryClientProvider client={queryClient}>
-				<ThemeProvider>
-					<AntdConfigProvider>{children}</AntdConfigProvider>
-				</ThemeProvider>
+				<AuthProvider>
+					<ThemeProvider>
+						<AntdConfigProvider>{children}</AntdConfigProvider>
+					</ThemeProvider>
+				</AuthProvider>
 			</QueryClientProvider>
 		</BrowserRouter>
 	)
