@@ -12,7 +12,7 @@ export default function AppRouter() {
 			<Route path="/login" element={<LoginPage />} />
 			<Route element={<AppLayout />}>
 				<Route path="/dashboard" element={<Users />} />
-				<Route path="/users/:id" element={<User />} />
+				<Route path="/dashboard/users/:id" element={<User />} />
 				<Route path="*" element={<Users />} />
 			</Route>
 		</Routes>

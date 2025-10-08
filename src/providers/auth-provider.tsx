@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 import { useNavigate } from "react-router"
 
 import { AuthContext } from "../contexts/auth-context"
-import { useMe } from "../hooks/auth"
+import { useMe } from "../hooks/user"
 import { removeTokens } from "../utils/auth"
 
 type AuthProviderProps = {

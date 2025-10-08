@@ -1,3 +1,4 @@
+import { PoweroffOutlined } from "@ant-design/icons"
 import { Button, Layout, Space } from "antd"
 import { Outlet } from "react-router"
 import { useAuthContext } from "../contexts/auth-context"
@@ -7,7 +8,7 @@ import ThemeSwitcher from "./theme-switcher"
 const { Header, Content } = Layout
 
 export default function AppLayout() {
-	const { logout } = useAuthContext()
+	const { user, logout } = useAuthContext()
 
 	useAuthGuard()
 
@@ -23,10 +24,13 @@ export default function AppLayout() {
 				<div style={{ color: "white", fontSize: "18px", fontWeight: "bold" }}>
 					App Layout
 				</div>
-				<Space>
+				<Space align="center" size="middle">
+					<div>
+						Olá, <strong>{user?.firstName}</strong> ({user?.role})
+					</div>
 					<ThemeSwitcher />
-					<Button onClick={logout} variant="filled" danger>
-						Logout
+					<Button onClick={logout}>
+						<PoweroffOutlined /> Sair
 					</Button>
 				</Space>
 			</Header>
