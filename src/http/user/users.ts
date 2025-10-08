@@ -1,23 +1,21 @@
 import { dummyApi, type Pagination, type User } from "../../libs/dummy-api"
 
 export type UsersRequest = {
-		isAdmin: boolean
-		limit?: number
-		page?: number
-		skip?: number
-	}
+	isAdmin: boolean
+	limit?: number
+	skip?: number
+}
 
 type UsersResponse = Pagination & {
 	users: User[]
 }
 
-export async function users({ limit, page, skip, isAdmin }: UsersRequest) {
+export async function users({ limit, skip, isAdmin }: UsersRequest) {
 	const resp = await dummyApi.get<UsersResponse>(
 		`/users${!isAdmin ? "/filter" : ""}`,
 		{
 			params: {
 				limit,
-				page,
 				skip,
 				...(!isAdmin ? { key: "role", value: "user" } : {}),
 			},
