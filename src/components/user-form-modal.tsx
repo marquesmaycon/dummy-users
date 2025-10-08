@@ -22,12 +22,8 @@ export default function UserFormModal({
 	const [form] = Form.useForm<User>()
 	const [messageApi, context] = message.useMessage()
 	const { data: user, isLoading } = useUser(userId)
-
-	const {
-		mutateAsync: add,
-		isPending: isAdding,
-		error: addError,
-	} = useAddUser()
+	
+	const { mutateAsync: add, isPending: isAdding, error: addError } = useAddUser()
 	const {
 		mutateAsync: update,
 		isPending: isUpdating,
@@ -35,10 +31,10 @@ export default function UserFormModal({
 	} = useUpdateUser(userId)
 
 	useEffect(() => {
-		if (isEdit && user) {
+		if (isEdit && user && open) {
 			form.setFieldsValue(user)
 		}
-	}, [form, user, isEdit])
+	}, [form, user, isEdit, open])
 
 	const handleSubmit = async (values: AddUserRequest) => {
 		if (isEdit) {

@@ -1,19 +1,11 @@
-import {
-	Alert,
-	Button,
-	Modal,
-	message,
-	Space,
-	Table,
-	type TableProps,
-	Tag,
-} from "antd"
+import { Button, Space, Table, type TableProps, Tag } from "antd"
 import { useMemo, useState } from "react"
 import { Link } from "react-router"
 
 import { useAuthContext } from "../contexts/auth-context"
-import { useDeleteUser, useUsers } from "../hooks/user"
+import { useUsers } from "../hooks/user"
 import type { User } from "../libs/dummy-api"
+import DeleteUserModal from "./delete-user-modal"
 
 type UsersListProps = {
 	onEditClick: (userId: number) => void
@@ -28,8 +20,6 @@ type DeleteModalState = {
 export default function UsersList({ onEditClick }: UsersListProps) {
 	const { role } = useAuthContext()
 	const isAdmin = role === "admin"
-
-	const [messageApi, contextHolder] = message.useMessage()
 
 	const [{ open, userId, name }, setDeleteModal] = useState<DeleteModalState>({
 		open: false,
@@ -47,15 +37,6 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 		skip: (page - 1) * pageSize,
 		isAdmin,
 	})
-
-	const { mutateAsync: destroy, isPending } = useDeleteUser()
-
-	const handleDelete = async () => {
-		if (!userId) return
-		await destroy({ id: userId })
-		messageApi.success("User deleted successfully")
-		setDeleteModal({ open: false, userId: null, name: null })
-	}
 
 	const columns: TableProps<User>["columns"] = useMemo(() => {
 		return [
@@ -128,7 +109,6 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 
 	return (
 		<>
-			{contextHolder}
 			<Table<User>
 				dataSource={data?.users}
 				loading={isLoading || isFetching}
@@ -142,26 +122,14 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 					showTotal: (total) => `Total ${total} items`,
 				}}
 			/>
-			<Modal
-				title="Excluir usuário"
+			<DeleteUserModal
 				open={open}
-				confirmLoading={isPending}
-				onCancel={() =>
+				userId={userId}
+				name={name}
+				onClose={() =>
 					setDeleteModal({ open: false, userId: null, name: null })
 				}
-				okButtonProps={{
-					danger: true,
-					onClick: handleDelete,
-					loading: isPending,
-				}}
-			>
-				<Alert
-					message={`Are you sure you want to delete user ${name}?`}
-					showIcon
-					style={{ fontWeight: "bold" }}
-					type="warning"
-				/>
-			</Modal>
+			/>
 		</>
 	)
 }
