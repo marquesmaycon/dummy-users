@@ -1,4 +1,4 @@
-import { Alert, Flex, Form, Input, Modal, Spin } from "antd"
+import { Alert, Flex, Form, Input, Modal, message, Spin } from "antd"
 import { useEffect } from "react"
 
 import { useAddUser, useUpdateUser, useUser } from "../hooks/user"
@@ -20,6 +20,7 @@ export default function UserFormModal({
 	const isEdit = mode === "edit"
 
 	const [form] = Form.useForm<User>()
+	const [messageApi, context] = message.useMessage()
 	const { data: user, isLoading } = useUser(userId)
 
 	const {
@@ -45,6 +46,7 @@ export default function UserFormModal({
 		} else {
 			await add(values)
 		}
+		messageApi.success(`User ${isEdit ? "updated" : "added"} successfully`)
 		clearAndCancel()
 	}
 
@@ -64,6 +66,7 @@ export default function UserFormModal({
 			onCancel={clearAndCancel}
 			okButtonProps={{ onClick: () => form.submit() }}
 		>
+			{context}
 			{isEdit && isLoading ? (
 				<Flex style={{ minHeight: 210 }} align="center" justify="center">
 					<Spin />

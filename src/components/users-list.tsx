@@ -1,4 +1,13 @@
-import { Alert, Button, Modal, Space, Table, type TableProps, Tag } from "antd"
+import {
+	Alert,
+	Button,
+	Modal,
+	message,
+	Space,
+	Table,
+	type TableProps,
+	Tag,
+} from "antd"
 import { useMemo, useState } from "react"
 import { Link } from "react-router"
 
@@ -19,6 +28,8 @@ type DeleteModalState = {
 export default function UsersList({ onEditClick }: UsersListProps) {
 	const { role } = useAuthContext()
 	const isAdmin = role === "admin"
+
+	const [messageApi, contextHolder] = message.useMessage()
 
 	const [{ open, userId, name }, setDeleteModal] = useState<DeleteModalState>({
 		open: false,
@@ -42,6 +53,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 	const handleDelete = async () => {
 		if (!userId) return
 		await destroy({ id: userId })
+		messageApi.success("User deleted successfully")
 		setDeleteModal({ open: false, userId: null, name: null })
 	}
 
@@ -116,6 +128,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 
 	return (
 		<>
+			{contextHolder}
 			<Table<User>
 				dataSource={data?.users}
 				loading={isLoading || isFetching}

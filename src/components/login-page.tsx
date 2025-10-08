@@ -22,7 +22,7 @@ export default function LoginPage() {
 
 	const handleFinish = async (values: FieldType) => {
 		await login(values)
-		navigate("/dashboard")
+		navigate("/dashboard/users")
 	}
 
 	return (
