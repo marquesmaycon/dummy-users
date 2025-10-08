@@ -65,10 +65,22 @@ export const useAddUser = () => {
 	return useMutation({
 		mutationFn: addUser,
 		onSuccess: (data) => {
-			queryClient.setQueriesData<UsersResponse>(
-				{ queryKey: ["users"] },
-				(oldData) => updateUserCache(data, oldData),
-			)
+			const [lastQueryKey, lastQueryData] =
+				queryClient
+					.getQueriesData<UsersResponse>({
+						queryKey: ["users"],
+					})
+					.at(-1) || []
+			if (lastQueryKey && lastQueryData) {
+				queryClient.setQueryData(lastQueryKey, {
+					...lastQueryData,
+					total: lastQueryData.total + 1,
+					users: [{ ...data, key: data.id }, ...lastQueryData.users].slice(
+						0,
+						lastQueryData.users.length,
+					),
+				})
+			}
 			queryClient.setQueryData(["user", data.id], data)
 		},
 	})

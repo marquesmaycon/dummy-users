@@ -17,6 +17,9 @@ export type AddUserRequest = {
 type AddUserResponse = User
 
 export async function addUser(data: AddUserRequest) {
-	const resp = await dummyApi.post<AddUserResponse>(`/users/add`, data)
+	const resp = await dummyApi.post<AddUserResponse>(`/users/add`, {
+		role: "user",
+		...data,
+	})
 	return resp.data
 }

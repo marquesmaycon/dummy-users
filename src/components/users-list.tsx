@@ -1,4 +1,9 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons"
+import {
+	DeleteOutlined,
+	EditOutlined,
+	EyeOutlined,
+	UserOutlined,
+} from "@ant-design/icons"
 import { Avatar, Button, Space, Table, type TableProps, Tag } from "antd"
 import { useMemo, useState } from "react"
 import { Link } from "react-router"
@@ -59,7 +64,11 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 				key: "name",
 				render: (_, { firstName, lastName, image }) => (
 					<Space>
-						<Avatar src={image} />
+						{image ? (
+							<Avatar src={image} />
+						) : (
+							<Avatar size={30} icon={<UserOutlined />} />
+						)}
 						<span>{`${firstName} ${lastName}`}</span>
 					</Space>
 				),
@@ -85,7 +94,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 				dataIndex: "role",
 				key: "role",
 				render: (_, { role }) => {
-					const { color, label } = roleMetaColors[role]
+					const { color, label } = roleMetaColors[role || "user"]
 					return (
 						<Tag color={color} key={role}>
 							{label.toUpperCase()}
