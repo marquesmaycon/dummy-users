@@ -3,6 +3,7 @@ import { Button, Layout, Space } from "antd"
 import { Outlet } from "react-router"
 import { useAuthContext } from "../contexts/auth-context"
 import { useAuthGuard } from "../utils/auth"
+import Footer from "./footer"
 import ThemeSwitcher from "./theme-switcher"
 
 const { Header, Content } = Layout
@@ -37,6 +38,7 @@ export default function AppLayout() {
 			<Content style={{ padding: "24px" }}>
 				<Outlet />
 			</Content>
+			<Footer />
 		</Layout>
 	)
 }

@@ -1,10 +1,13 @@
+import { LoginOutlined } from "@ant-design/icons"
 import { Alert, Button, Card, Form, Input, Layout } from "antd"
 import { useForm } from "antd/es/form/Form"
 import { Content } from "antd/es/layout/layout"
 import { useNavigate } from "react-router"
+
 import { useLogin } from "../hooks/auth"
 import { useGuestGuard } from "../utils/auth"
 import { getAxiosErrorMessage } from "../utils/get-axios-error-message"
+import Footer from "./footer"
 import ThemeSwitcher from "./theme-switcher"
 
 type FieldType = {
@@ -33,7 +36,7 @@ export default function LoginPage() {
 				<ThemeSwitcher />
 			</div>
 			<Content style={{ display: "grid", placeContent: "center" }}>
-				<Card title="Login" style={{ minWidth: "400px" }}>
+				<Card title="Login" style={{ minWidth: "440px" }}>
 					{error && (
 						<Alert
 							message={getAxiosErrorMessage(error) || "Unknown error"}
@@ -48,39 +51,40 @@ export default function LoginPage() {
 						wrapperCol={{ span: 16 }}
 						style={{ maxWidth: 600 }}
 						initialValues={{ remember: true }}
-						// autoComplete="off"
 						onFinish={handleFinish}
 						form={form}
 					>
 						<Form.Item<FieldType>
-							label="User Name"
+							label="Nome de usuário"
 							name="username"
 							rules={[
 								{
 									required: true,
-									message: "Please input your user name!",
+									message: "Por favor, insira seu nome de usuário!",
 								},
 							]}
 						>
 							<Input />
 						</Form.Item>
 						<Form.Item<FieldType>
-							label="Password"
+							label="Senha"
 							name="password"
 							rules={[
-								{ required: true, message: "Please input your password!" },
+								{ required: true, message: "Por favor, insira sua senha!" },
 							]}
 						>
 							<Input.Password />
 						</Form.Item>
 						<Form.Item key="submit" label={null}>
 							<Button type="primary" htmlType="submit" loading={isPending}>
-								Submit
+								Enviar
+								<LoginOutlined />
 							</Button>
 						</Form.Item>
 					</Form>
 				</Card>
 			</Content>
+			<Footer />
 		</Layout>
 	)
 }
