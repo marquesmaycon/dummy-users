@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons"
 import { Button, Flex, Typography } from "antd"
 import { useState } from "react"
-
+import { useAuthContext } from "../contexts/auth-context"
 import UserFormModal from "./user-form-modal"
 import UsersList from "./users-list"
 
@@ -14,6 +14,9 @@ export type UserModalState = {
 }
 
 export default function Users() {
+	const { role } = useAuthContext()
+	const isAdmin = role === "admin"
+
 	const [userModal, setUserModal] = useState<UserModalState>({
 		open: false,
 		mode: "add",
@@ -24,15 +27,17 @@ export default function Users() {
 		<div>
 			<Flex align="center" justify="space-between">
 				<Title level={1}>Users</Title>
-				<Button
-					type="primary"
-					onClick={() =>
-						setUserModal({ open: true, mode: "add", userId: null })
-					}
-				>
-					Cadastrar
-					<PlusOutlined />
-				</Button>
+				{isAdmin && (
+					<Button
+						type="primary"
+						onClick={() =>
+							setUserModal({ open: true, mode: "add", userId: null })
+						}
+					>
+						Cadastrar
+						<PlusOutlined />
+					</Button>
+				)}
 			</Flex>
 			<UsersList
 				onEditClick={(userId: number) =>

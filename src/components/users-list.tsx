@@ -57,14 +57,12 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 				title: "Nome",
 				dataIndex: "name",
 				key: "name",
-				render: (_, { firstName, lastName, image }) => {
-					return (
-						<Space>
-							<Avatar src={image} />
-							<span>{`${firstName} ${lastName}`}</span>
-						</Space>
-					)
-				},
+				render: (_, { firstName, lastName, image }) => (
+					<Space>
+						<Avatar src={image} />
+						<span>{`${firstName} ${lastName}`}</span>
+					</Space>
+				),
 			},
 
 			{
@@ -109,7 +107,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 						{isAdmin && (
 							<>
 								<Button
-									color="cyan"
+									color="purple"
 									variant="filled"
 									onClick={() => onEditClick(id)}
 								>
@@ -117,6 +115,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 								</Button>
 								<Button
 									danger
+									variant="solid"
 									onClick={() =>
 										setDeleteModal({
 											open: true,

@@ -1,12 +1,14 @@
 import { PoweroffOutlined } from "@ant-design/icons"
-import { Button, Layout, Space } from "antd"
+import { Button, Divider, Flex, Layout, Typography } from "antd"
 import { Outlet } from "react-router"
+
 import { useAuthContext } from "../contexts/auth-context"
 import { useAuthGuard } from "../utils/auth"
 import Footer from "./footer"
 import ThemeSwitcher from "./theme-switcher"
 
 const { Header, Content } = Layout
+const { Title, Text } = Typography
 
 export default function AppLayout() {
 	const { user, logout } = useAuthContext()
@@ -22,18 +24,22 @@ export default function AppLayout() {
 					alignItems: "center",
 				}}
 			>
-				<div style={{ color: "white", fontSize: "18px", fontWeight: "bold" }}>
+				<Title level={2} style={{ marginBottom: 0 }}>
 					Dummy Users
-				</div>
-				<Space align="center" size="middle">
-					<div>
+				</Title>
+				<Flex align="center" gap={16}>
+					<Text>
 						Olá, <strong>{user?.firstName}</strong> ({user?.role})
-					</div>
+					</Text>
+
+					<Divider type="vertical" />
+
 					<ThemeSwitcher />
+
 					<Button onClick={logout}>
 						<PoweroffOutlined /> Sair
 					</Button>
-				</Space>
+				</Flex>
 			</Header>
 			<Content style={{ padding: "24px" }}>
 				<Outlet />

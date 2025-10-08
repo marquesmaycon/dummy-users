@@ -1,8 +1,13 @@
-import { ArrowLeftOutlined } from "@ant-design/icons"
+import {
+	ArrowLeftOutlined,
+	DeleteOutlined,
+	EditOutlined,
+} from "@ant-design/icons"
 import { Avatar, Button, Divider, Flex, Spin, Typography } from "antd"
 import { useState } from "react"
 import { Link, useParams } from "react-router"
 
+import { useAuthContext } from "../contexts/auth-context"
 import { useUser } from "../hooks/user"
 import DeleteUserModal from "./delete-user-modal"
 import UserFormModal from "./user-form-modal"
@@ -23,7 +28,10 @@ const userProps = {
 
 export default function User() {
 	const { id } = useParams<{ id: string }>()
+	const { role } = useAuthContext()
+	
 	const userId = Number(id) || null
+	const isAdmin = role === "admin"
 
 	const { data: user, isLoading } = useUser(userId)
 	const [modalOpen, setModalOpen] = useState<"edit" | "delete" | null>(null)
@@ -37,12 +45,16 @@ export default function User() {
 					<Avatar src={user?.image} size={64} /> {user?.firstName}{" "}
 					{user?.lastName}
 				</Title>
-				<Flex align="center" gap={8}>
-					<Button onClick={() => setModalOpen("edit")}>Editar</Button>
-					<Button onClick={() => setModalOpen("delete")} danger>
-						Excluir
-					</Button>
-				</Flex>
+				{isAdmin && (
+					<Flex align="center" gap={8}>
+						<Button onClick={() => setModalOpen("edit")}>
+							Editar <EditOutlined />
+						</Button>
+						<Button onClick={() => setModalOpen("delete")} danger>
+							Excluir <DeleteOutlined />
+						</Button>
+					</Flex>
+				)}
 			</Flex>
 
 			<Divider size="small" />

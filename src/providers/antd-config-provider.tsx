@@ -11,6 +11,11 @@ export function AntdConfigProvider({
 		<ConfigProvider
 			theme={{
 				algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+				components: {
+					Layout: {
+						headerBg: isDarkMode ? "#001529" : "#dceeffff",
+					},
+				},
 			}}
 		>
 			{children}

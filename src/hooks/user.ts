@@ -41,6 +41,7 @@ export const useUsers = (params: UsersRequest) => {
 }
 
 export const useUser = (id: number | null) => {
+	const queryClient = useQueryClient()
 	return useQuery({
 		queryKey: ["user", id],
 		queryFn: async () => {
@@ -48,6 +49,14 @@ export const useUser = (id: number | null) => {
 			return await user({ id })
 		},
 		enabled: !!id,
+		placeholderData: () => {
+			const usersCache = queryClient.getQueriesData<UsersResponse>({
+				queryKey: ["users"],
+			})
+			return usersCache
+				.find(([, data]) => !!data?.users.find((u) => u.id === id))?.[1]
+				?.users.find((u) => u.id === id)
+		},
 	})
 }
 

@@ -138,7 +138,7 @@ export default function UserFormModal({
 						label="Data de nascimento"
 						name="birthDate"
 					>
-						<DatePicker />
+						<DatePicker placeholder="Selecione a data" />
 					</Form.Item>
 					<Form.Item<AddUserRequest>
 						label="Imagem"
