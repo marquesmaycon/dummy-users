@@ -8,7 +8,6 @@ export default function ThemeSwitcher() {
 
 	return (
 		<Button
-			type="text"
 			icon={isDarkMode ? <SunOutlined /> : <MoonOutlined />}
 			onClick={toggleTheme}
 			title={`Mudar para tema ${isDarkMode ? "claro" : "escuro"}`}

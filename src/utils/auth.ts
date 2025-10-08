@@ -42,3 +42,8 @@ export function checkAuthStatus() {
 		refreshToken,
 	}
 }
+
+export function removeTokens() {
+	Cookies.remove("accessToken")
+	Cookies.remove("refreshToken")
+}

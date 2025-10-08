@@ -1,6 +1,6 @@
 import Cookies from "js-cookie"
-
 import { dummyApi } from "../../libs/dummy-api"
+import { queryClient } from "../../libs/tanstack-query"
 import { me } from "../user/me"
 
 export type LoginRequest = {
@@ -30,7 +30,10 @@ export async function login(data: LoginRequest) {
 	Cookies.set("accessToken", accessToken, { path: "/" })
 	Cookies.set("refreshToken", refreshToken, { path: "/" })
 
+	// TO DO => ainda duplicando request
 	const myInfo = await me()
+	queryClient.setQueryData(["me"], myInfo)
+	
 	const isAllowed = myInfo.role === "admin" || myInfo.role === "user"
 
 	if (!isAllowed) {

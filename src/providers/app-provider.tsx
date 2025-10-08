@@ -1,4 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { BrowserRouter } from "react-router"
 
 import { queryClient } from "../libs/tanstack-query"
@@ -19,6 +20,7 @@ export default function AppProvider({
 						<AntdConfigProvider>{children}</AntdConfigProvider>
 					</ThemeProvider>
 				</AuthProvider>
+				<ReactQueryDevtools initialIsOpen={false} />
 			</QueryClientProvider>
 		</BrowserRouter>
 	)

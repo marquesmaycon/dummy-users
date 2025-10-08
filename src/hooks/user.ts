@@ -1,10 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import {
+	addUser,
+	deleteUser,
+	me,
+	type UsersRequest,
+	updateUser,
+	user,
+	users,
+} from "../http/user"
+import { checkAuthStatus } from "../utils/auth"
 
-import { addUser } from "../http/user/add-user"
-import { deleteUser } from "../http/user/delete-user"
-import { updateUser } from "../http/user/update-user"
-import { user } from "../http/user/user"
-import { type UsersRequest, users } from "../http/user/users"
+export const useMe = () => {
+	const { isAuthenticated } = checkAuthStatus()
+	return useQuery({
+		queryKey: ["me"],
+		queryFn: me,
+		enabled: isAuthenticated,
+	})
+}
 
 export const useUsers = (params: UsersRequest) => {
 	return useQuery({

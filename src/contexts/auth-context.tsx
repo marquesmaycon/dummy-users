@@ -6,6 +6,7 @@ type AuthContextType = {
 	user: User | null
 	isLoading: boolean
 	role: User["role"] | undefined
+	logout: () => void
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
