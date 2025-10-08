@@ -1,9 +1,7 @@
 import axios from "axios"
 import Cookies from "js-cookie"
 
-export const dummyApi = axios.create({
-	baseURL: "https://dummyjson.com/",
-})
+export const dummyApi = axios.create({ baseURL: "https://dummyjson.com/" })
 
 dummyApi.interceptors.request.use((config) => {
 	const token = Cookies.get("accessToken")

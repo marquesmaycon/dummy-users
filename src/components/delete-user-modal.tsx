@@ -24,7 +24,7 @@ export default function DeleteUserModal({
 	const handleDelete = async () => {
 		if (!userId) return
 		await destroy({ id: userId })
-		messageApi.success("User deleted successfully")
+		messageApi.success("Usuário excluído com sucesso")
 		onClose()
 		navigate("/dashboard/users")
 	}
@@ -40,10 +40,12 @@ export default function DeleteUserModal({
 				onClick: handleDelete,
 				loading: isPending,
 			}}
+			okText="Excluir permanentemente"
+			cancelText="Cancelar"
 		>
 			{contextHolder}
 			<Alert
-				message={`Are you sure you want to delete user ${name}?`}
+				message={`Tem certeza que deseja excluir o usuário ${name}?`}
 				showIcon
 				style={{ fontWeight: "bold" }}
 				type="warning"

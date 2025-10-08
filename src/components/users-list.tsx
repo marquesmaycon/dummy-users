@@ -116,7 +116,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 						{isAdmin && (
 							<>
 								<Button
-									color="purple"
+									color="blue"
 									variant="filled"
 									onClick={() => onEditClick(id)}
 								>

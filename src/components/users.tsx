@@ -1,6 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons"
 import { Button, Flex, Typography } from "antd"
 import { useState } from "react"
+
 import { useAuthContext } from "../contexts/auth-context"
 import UserFormModal from "./user-form-modal"
 import UsersList from "./users-list"
@@ -26,7 +27,7 @@ export default function Users() {
 	return (
 		<div>
 			<Flex align="center" justify="space-between">
-				<Title level={1}>Users</Title>
+				<Title level={1}>Usuários</Title>
 				{isAdmin && (
 					<Button
 						type="primary"

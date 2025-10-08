@@ -9,13 +9,17 @@ import {
 	message,
 	Spin,
 } from "antd"
+import dayjs from "dayjs"
 import { useEffect } from "react"
 
 import { useAddUser, useUpdateUser, useUser } from "../hooks/user"
-import type { AddUserRequest } from "../http/user"
 import type { User } from "../libs/dummy-api"
 import { getAxiosErrorMessage } from "../utils/get-axios-error-message"
 import type { UserModalState } from "./users"
+
+type UserFormValues = Omit<User, "birthDate"> & {
+	birthDate?: dayjs.Dayjs
+}
 
 type UserFormProps = UserModalState & {
 	onCancel: () => void
@@ -29,7 +33,7 @@ export default function UserFormModal({
 }: UserFormProps) {
 	const isEdit = mode === "edit"
 
-	const [form] = Form.useForm<User>()
+	const [form] = Form.useForm<UserFormValues>()
 	const [messageApi, context] = message.useMessage()
 	const { data: user, isLoading } = useUser(userId)
 	
@@ -42,17 +46,30 @@ export default function UserFormModal({
 
 	useEffect(() => {
 		if (isEdit && user && open) {
-			form.setFieldsValue(user)
+			console.log(user)
+			const formattedUser = {
+				...user,
+				birthDate: user.birthDate ? dayjs(user.birthDate) : undefined,
+			}
+			form.setFieldsValue(formattedUser)
 		}
 	}, [form, user, isEdit, open])
 
-	const handleSubmit = async (values: AddUserRequest) => {
-		if (isEdit) {
-			await update(values)
-		} else {
-			await add(values)
+	const handleSubmit = async (values: UserFormValues) => {
+		const formattedValues = {
+			...values,
+			birthDate: values.birthDate
+				? dayjs(values.birthDate).format("YYYY-M-D")
+				: values.birthDate,
 		}
-		messageApi.success(`User ${isEdit ? "updated" : "added"} successfully`)
+		if (isEdit) {
+			await update(formattedValues)
+		} else {
+			await add(formattedValues)
+		}
+		messageApi.success(
+			`Usuário ${isEdit ? "atualizado" : "adicionado"} com sucesso`,
+		)
 		clearAndCancel()
 	}
 
@@ -66,11 +83,13 @@ export default function UserFormModal({
 
 	return (
 		<Modal
-			title="Title"
+			title={isEdit ? "Editar Usuário" : "Adicionar Novo Usuário"}
 			open={open}
 			confirmLoading={isPending}
 			onCancel={clearAndCancel}
 			okButtonProps={{ onClick: () => form.submit() }}
+			okText="Salvar"
+			cancelText="Cancelar"
 		>
 			{context}
 			{isEdit && isLoading ? (
@@ -78,7 +97,7 @@ export default function UserFormModal({
 					<Spin />
 				</Flex>
 			) : (
-				<Form<User>
+				<Form<UserFormValues>
 					form={form}
 					name="basic"
 					labelCol={{ span: 8 }}
@@ -94,69 +113,69 @@ export default function UserFormModal({
 							style={{ marginBottom: "1rem" }}
 						/>
 					)}
-					<Form.Item<AddUserRequest>
+					<Form.Item<UserFormValues>
 						label="Nome"
 						name="firstName"
 						rules={[
 							{
 								required: true,
-								message: "Please input your user name!",
+								message: "Por favor, insira o nome!",
 							},
 						]}
 					>
 						<Input />
 					</Form.Item>
-					<Form.Item<AddUserRequest>
+					<Form.Item<UserFormValues>
 						label="Sobrenome"
 						name="lastName"
 						rules={[
-							{ required: true, message: "Please input your last name!" },
+							{ required: true, message: "Por favor, insira o sobrenome!" },
 						]}
 					>
 						<Input />
 					</Form.Item>
-					<Form.Item<AddUserRequest>
+					<Form.Item<UserFormValues>
 						label="E-mail"
 						name="email"
 						rules={[
 							{
 								required: true,
-								message: "Please input your email!",
+								message: "Por favor, insira o e-mail!",
 								type: "email",
 							},
 						]}
 					>
 						<Input />
 					</Form.Item>
-					<Form.Item<AddUserRequest> label="Telefone" name="phone">
+					<Form.Item<UserFormValues> label="Telefone" name="phone">
 						<Input />
 					</Form.Item>
-					<Form.Item<AddUserRequest> label="Nome de Usuário" name="username">
+					<Form.Item<UserFormValues> label="Nome de Usuário" name="username">
 						<Input />
 					</Form.Item>
-					<Form.Item<AddUserRequest>
+					<Form.Item<UserFormValues>
 						label="Data de nascimento"
 						name="birthDate"
 					>
-						<DatePicker placeholder="Selecione a data" />
+						<DatePicker placeholder="Selecione a data" format="DD/MM/YYYY" />
 					</Form.Item>
-					<Form.Item<AddUserRequest>
+					<Form.Item<UserFormValues>
 						label="Imagem"
 						name="image"
 						rules={[{ type: "url", message: "Please enter a valid URL!" }]}
 					>
 						<Input />
 					</Form.Item>
-					<Form.Item<AddUserRequest> label="Grupo sanguíneo" name="bloodGroup">
+					<Form.Item<UserFormValues> label="Grupo sanguíneo" name="bloodGroup">
 						<Input />
 					</Form.Item>
-					<Form.Item<AddUserRequest> label="Altura" name="height">
+					<Form.Item<UserFormValues> label="Altura" name="height">
 						<InputNumber min={0} />
 					</Form.Item>
-					<Form.Item<AddUserRequest> label="Peso" name="weight">
+					<Form.Item<UserFormValues> label="Peso" name="weight">
 						<InputNumber min={0} />
 					</Form.Item>
-					<Form.Item<AddUserRequest> label="Cor dos olhos" name="eyeColor">
+					<Form.Item<UserFormValues> label="Cor dos olhos" name="eyeColor">
 						<Input />
 					</Form.Item>
 				</Form>

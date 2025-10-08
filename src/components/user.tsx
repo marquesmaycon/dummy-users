@@ -47,7 +47,11 @@ export default function User() {
 				</Title>
 				{isAdmin && (
 					<Flex align="center" gap={8}>
-						<Button onClick={() => setModalOpen("edit")}>
+						<Button
+							onClick={() => setModalOpen("edit")}
+							color="blue"
+							variant="filled"
+						>
 							Editar <EditOutlined />
 						</Button>
 						<Button onClick={() => setModalOpen("delete")} danger>
