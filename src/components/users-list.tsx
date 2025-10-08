@@ -1,29 +1,49 @@
-import { Button, Space, Table, type TableProps, Tag } from "antd"
+import { Alert, Button, Modal, Space, Table, type TableProps, Tag } from "antd"
 import { useMemo, useState } from "react"
 import { Link } from "react-router"
 
 import { useAuthContext } from "../contexts/auth-context"
-import { useUsers } from "../hooks/user"
+import { useDeleteUser, useUsers } from "../hooks/user"
 import type { User } from "../libs/dummy-api"
 
 type UsersListProps = {
 	onEditClick: (userId: number) => void
 }
 
+type DeleteModalState = {
+	open: boolean
+	userId: number | null
+	name: string | null
+}
+
 export default function UsersList({ onEditClick }: UsersListProps) {
 	const { role } = useAuthContext()
 	const isAdmin = role === "admin"
+
+	const [{ open, userId, name }, setDeleteModal] = useState<DeleteModalState>({
+		open: false,
+		userId: null,
+		name: null,
+	})
 
 	const [{ page, pageSize }, setPagination] = useState({
 		page: 1,
 		pageSize: 10,
 	})
-
+	
 	const { data, isLoading, isFetching } = useUsers({
 		limit: pageSize,
 		skip: (page - 1) * pageSize,
 		isAdmin,
 	})
+
+	const { mutateAsync: destroy, isPending } = useDeleteUser()
+
+	const handleDelete = async () => {
+		if (!userId) return
+		await destroy({ id: userId })
+		setDeleteModal({ open: false, userId: null, name: null })
+	}
 
 	const columns: TableProps<User>["columns"] = useMemo(() => {
 		return [
@@ -60,7 +80,7 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 			{
 				title: "Actions",
 				key: "actions",
-				render: (_, { id }) => (
+				render: (_, { id, firstName, lastName }) => (
 					<Space align="center" size="middle">
 						<Link to={`/dashboard/users/${id}`}>
 							<Button>View</Button>
@@ -74,7 +94,18 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 								>
 									Edit
 								</Button>
-								<Button danger>Delete</Button>
+								<Button
+									danger
+									onClick={() =>
+										setDeleteModal({
+											open: true,
+											userId: id,
+											name: `${firstName} ${lastName}`,
+										})
+									}
+								>
+									Delete
+								</Button>
 							</>
 						)}
 					</Space>
@@ -82,19 +113,42 @@ export default function UsersList({ onEditClick }: UsersListProps) {
 			},
 		]
 	}, [isAdmin, onEditClick])
+
 	return (
-		<Table<User>
-			dataSource={data?.users}
-			loading={isLoading || isFetching}
-			columns={columns}
-			pagination={{
-				total: data?.total,
-				pageSize,
-				showSizeChanger: true,
-				onChange: (page, pageSize) => setPagination({ page, pageSize }),
-				pageSizeOptions: ["10", "20", "50"],
-				showTotal: (total) => `Total ${total} items`,
-			}}
-		/>
+		<>
+			<Table<User>
+				dataSource={data?.users}
+				loading={isLoading || isFetching}
+				columns={columns}
+				pagination={{
+					total: data?.total,
+					pageSize,
+					showSizeChanger: true,
+					onChange: (page, pageSize) => setPagination({ page, pageSize }),
+					pageSizeOptions: ["10", "20", "50"],
+					showTotal: (total) => `Total ${total} items`,
+				}}
+			/>
+			<Modal
+				title="Excluir usuário"
+				open={open}
+				confirmLoading={isPending}
+				onCancel={() =>
+					setDeleteModal({ open: false, userId: null, name: null })
+				}
+				okButtonProps={{
+					danger: true,
+					onClick: handleDelete,
+					loading: isPending,
+				}}
+			>
+				<Alert
+					message={`Are you sure you want to delete user ${name}?`}
+					showIcon
+					style={{ fontWeight: "bold" }}
+					type="warning"
+				/>
+			</Modal>
+		</>
 	)
 }
