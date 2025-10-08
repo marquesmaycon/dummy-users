@@ -4,7 +4,7 @@ export type UserRequest = {
 		id: number
 	}
 
-type UserResponse = User
+export type UserResponse = User
 
 export async function user({ id }: UserRequest) {
 	const resp = await dummyApi.get<UserResponse>(`/users/${id}`)

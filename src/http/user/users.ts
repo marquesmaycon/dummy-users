@@ -6,7 +6,7 @@ export type UsersRequest = {
 	skip?: number
 }
 
-type UsersResponse = Pagination & {
+export type UsersResponse = Pagination & {
 	users: User[]
 }
 

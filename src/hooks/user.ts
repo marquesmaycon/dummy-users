@@ -9,7 +9,9 @@ import {
 	deleteUser,
 	me,
 	type UpdateUserRequest,
+	type UserResponse,
 	type UsersRequest,
+	type UsersResponse,
 	updateUser,
 	user,
 	users,
@@ -39,7 +41,7 @@ export const useUsers = (params: UsersRequest) => {
 
 export const useUser = (id: number | null) => {
 	return useQuery({
-		queryKey: ["users", id],
+		queryKey: ["user", id],
 		queryFn: async () => {
 			if (!id) return Promise.reject("User ID is required")
 			return await user({ id })
@@ -52,8 +54,12 @@ export const useAddUser = () => {
 	const queryClient = useQueryClient()
 	return useMutation({
 		mutationFn: addUser,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["users"] })
+		onSuccess: (data) => {
+			queryClient.setQueriesData<UsersResponse>(
+				{ queryKey: ["users"] },
+				(oldData) => updateUserCache(data, oldData),
+			)
+			queryClient.setQueryData(["user", data.id], data)
 		},
 	})
 }
@@ -65,8 +71,18 @@ export const useUpdateUser = (userId: number | null) => {
 			if (!userId) return Promise.reject("User ID is required")
 			return await updateUser({ id: userId, ...data })
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["users"] })
+		onSuccess: (data) => {
+			queryClient.setQueriesData<UsersResponse>(
+				{ queryKey: ["users"] },
+				(oldData) => {
+					console.log(oldData)
+					return updateUserCache(data, oldData)
+				},
+			)
+			queryClient.setQueryData<UserResponse>(["user", userId], (oldData) => {
+				if (!oldData) return oldData
+				return { ...oldData, ...data }
+			})
 		},
 	})
 }
@@ -75,8 +91,28 @@ export const useDeleteUser = () => {
 	const queryClient = useQueryClient()
 	return useMutation({
 		mutationFn: deleteUser,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["users"] })
+		onSuccess: (_, { id }) => {
+			queryClient.setQueriesData(
+				{ queryKey: ["users"] },
+				(oldData: UsersResponse | undefined) => {
+					if (!oldData) return oldData
+					const filteredUsers = oldData.users.filter((user) => user.id !== id)
+					return { ...oldData, users: filteredUsers }
+				},
+			)
+			queryClient.setQueryData(["user", id], undefined)
 		},
 	})
+}
+
+const updateUserCache = (
+	newData: Partial<UpdateUserRequest>,
+	oldData: UsersResponse | undefined,
+) => {
+	if (!oldData) return oldData
+
+	const updatedUsers = oldData.users.map((user) =>
+		user.id === newData.id ? { ...user, ...newData } : user,
+	)
+	return { ...oldData, users: updatedUsers }
 }
