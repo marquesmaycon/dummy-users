@@ -2,9 +2,9 @@ import { PlusOutlined } from "@ant-design/icons"
 import { Button, Flex, Typography } from "antd"
 import { useState } from "react"
 
-import { useAuthContext } from "../contexts/auth-context"
-import UserFormModal from "./user-form-modal"
-import UsersList from "./users-list"
+import { useAuthContext } from "../../contexts/auth-context"
+import UserFormModal from "../user-form-modal"
+import UsersList from "../users-list"
 
 const { Title } = Typography
 

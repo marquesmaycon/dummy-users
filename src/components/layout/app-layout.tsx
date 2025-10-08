@@ -1,11 +1,10 @@
 import { PoweroffOutlined } from "@ant-design/icons"
 import { Button, Divider, Flex, Layout, Typography } from "antd"
 import { Outlet } from "react-router"
-
-import { useAuthContext } from "../contexts/auth-context"
-import { useAuthGuard } from "../utils/auth"
+import { useAuthContext } from "../../contexts/auth-context"
+import { useAuthGuard } from "../../utils/auth"
+import ThemeSwitcher from "../theme-switcher"
 import Footer from "./footer"
-import ThemeSwitcher from "./theme-switcher"
 
 const { Header, Content } = Layout
 const { Title, Text } = Typography

@@ -7,10 +7,10 @@ import { Avatar, Button, Divider, Flex, Spin, Typography } from "antd"
 import { useState } from "react"
 import { Link, useParams } from "react-router"
 
-import { useAuthContext } from "../contexts/auth-context"
-import { useUser } from "../hooks/user"
-import DeleteUserModal from "./delete-user-modal"
-import UserFormModal from "./user-form-modal"
+import { useAuthContext } from "../../contexts/auth-context"
+import { useUser } from "../../hooks/user"
+import DeleteUserModal from "../delete-user-modal"
+import UserFormModal from "../user-form-modal"
 
 const { Title, Text } = Typography
 

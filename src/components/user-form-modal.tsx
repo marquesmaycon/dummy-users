@@ -15,7 +15,7 @@ import { useEffect } from "react"
 import { useAddUser, useUpdateUser, useUser } from "../hooks/user"
 import type { User } from "../libs/dummy-api"
 import { getAxiosErrorMessage } from "../utils/get-axios-error-message"
-import type { UserModalState } from "./users"
+import type { UserModalState } from "./pages/users"
 
 type UserFormValues = Omit<User, "birthDate"> & {
 	birthDate?: dayjs.Dayjs

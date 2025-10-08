@@ -4,11 +4,11 @@ import { useForm } from "antd/es/form/Form"
 import { Content } from "antd/es/layout/layout"
 import { useNavigate } from "react-router"
 
-import { useLogin } from "../hooks/auth"
-import { useGuestGuard } from "../utils/auth"
-import { getAxiosErrorMessage } from "../utils/get-axios-error-message"
-import Footer from "./footer"
-import ThemeSwitcher from "./theme-switcher"
+import { useLogin } from "../../hooks/auth"
+import { useGuestGuard } from "../../utils/auth"
+import { getAxiosErrorMessage } from "../../utils/get-axios-error-message"
+import Footer from "../layout/footer"
+import ThemeSwitcher from "../theme-switcher"
 
 type FieldType = {
 	username: string

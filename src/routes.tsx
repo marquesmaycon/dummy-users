@@ -1,10 +1,10 @@
 import { lazy } from "react"
 import { Route, Routes } from "react-router"
 
-const AppLayout = lazy(() => import("./components/app-layout"))
-const LoginPage = lazy(() => import("./components/login-page"))
-const Users = lazy(() => import("./components/users"))
-const User = lazy(() => import("./components/user"))
+const AppLayout = lazy(() => import("./components//layout/app-layout"))
+const LoginPage = lazy(() => import("./components/pages/login-page"))
+const Users = lazy(() => import("./components/pages/users"))
+const User = lazy(() => import("./components/pages/user"))
 
 export default function AppRouter() {
 	return (
