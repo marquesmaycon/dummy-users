@@ -22,7 +22,7 @@ export default function AppLayout() {
 				}}
 			>
 				<div style={{ color: "white", fontSize: "18px", fontWeight: "bold" }}>
-					App Layout
+					Dummy Users
 				</div>
 				<Space align="center" size="middle">
 					<div>

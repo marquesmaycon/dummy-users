@@ -8,6 +8,7 @@ import {
 	addUser,
 	deleteUser,
 	me,
+	type UpdateUserRequest,
 	type UsersRequest,
 	updateUser,
 	user,
@@ -28,14 +29,21 @@ export const useUsers = (params: UsersRequest) => {
 	return useQuery({
 		queryKey: ["users", params],
 		queryFn: () => users(params),
+		select: ({ users, ...data }) => ({
+			...data,
+			users: users.map((user) => ({ key: user.id, ...user })),
+		}),
 		placeholderData: keepPreviousData,
 	})
 }
 
-export const useUser = (id: string | number) => {
+export const useUser = (id: number | null) => {
 	return useQuery({
 		queryKey: ["users", id],
-		queryFn: () => user({ id }),
+		queryFn: async () => {
+			if (!id) return Promise.reject("User ID is required")
+			return await user({ id })
+		},
 		enabled: !!id,
 	})
 }
@@ -50,10 +58,13 @@ export const useAddUser = () => {
 	})
 }
 
-export const useUpdateUser = () => {
+export const useUpdateUser = (userId: number | null) => {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationFn: updateUser,
+		mutationFn: async (data: UpdateUserRequest) => {
+			if (!userId) return Promise.reject("User ID is required")
+			return await updateUser({ id: userId, ...data })
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["users"] })
 		},

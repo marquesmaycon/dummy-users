@@ -1,8 +1,6 @@
 import { dummyApi, type User } from "../../libs/dummy-api"
 
-export type UpdateUserRequest = Partial<User> & {
-	id: number | string
-}
+export type UpdateUserRequest = Partial<User>
 
 type UpdateUserResponse = User
 

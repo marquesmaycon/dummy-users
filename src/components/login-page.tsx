@@ -48,7 +48,7 @@ export default function LoginPage() {
 						wrapperCol={{ span: 16 }}
 						style={{ maxWidth: 600 }}
 						initialValues={{ remember: true }}
-						autoComplete="off"
+						// autoComplete="off"
 						onFinish={handleFinish}
 						form={form}
 					>

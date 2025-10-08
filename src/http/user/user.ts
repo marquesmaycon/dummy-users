@@ -1,8 +1,8 @@
 import { dummyApi, type User } from "../../libs/dummy-api"
 
 export type UserRequest = {
-	id: string | number
-}
+		id: number
+	}
 
 type UserResponse = User
 

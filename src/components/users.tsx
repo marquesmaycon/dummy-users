@@ -1,92 +1,46 @@
-import { Button, Space, Table, type TableProps, Tag } from "antd"
-import { useMemo, useState } from "react"
-import { Link } from "react-router"
+import { Button, Flex, Typography } from "antd"
+import { useState } from "react"
 
-import { useAuthContext } from "../contexts/auth-context"
-import { useUsers } from "../hooks/user"
-import type { User } from "../libs/dummy-api"
+import UserFormModal from "./user-form-modal"
+import UsersList from "./users-list"
+
+const { Title } = Typography
+
+export type UserModalState = {
+	open: boolean
+	mode: "add" | "edit"
+	userId: number | null
+}
 
 export default function Users() {
-	const { role } = useAuthContext()
-	const isAdmin = role === "admin"
-
-	const [{ page, pageSize }, setPagination] = useState({
-		page: 1,
-		pageSize: 10,
+	const [userModal, setUserModal] = useState<UserModalState>({
+		open: false,
+		mode: "add",
+		userId: null,
 	})
-
-	const { data, isLoading, isFetching } = useUsers({
-		limit: pageSize,
-		skip: (page - 1) * pageSize,
-		isAdmin,
-	})
-
-	const columns: TableProps<User>["columns"] = useMemo(() => {
-		return [
-			{
-				title: "Full Name",
-				key: "name",
-				render: (_, record) => `${record.firstName} ${record.lastName}`,
-			},
-			{
-				title: "Age",
-				dataIndex: "age",
-				key: "age",
-			},
-			{
-				title: "E-mail",
-				dataIndex: "email",
-				key: "email",
-			},
-			{
-				title: "Role",
-				dataIndex: "role",
-				key: "role",
-				render: (_, { role }) => {
-					const color =
-						role === "admin" ? "red" : role === "user" ? "green" : "gray"
-					return (
-						<Tag color={color} key={role}>
-							{role.toUpperCase()}
-						</Tag>
-					)
-				},
-			},
-			{
-				title: "Actions",
-				key: "actions",
-				render: (_, { id }) => (
-					<Space align="center" size="middle">
-						<Link to={`/dashboard/users/${id}`}>
-							<Button>View</Button>
-						</Link>
-						{isAdmin && (
-							<>
-								<Button color="cyan" variant="filled">
-									Edit
-								</Button>
-								<Button danger>Delete</Button>
-							</>
-						)}
-					</Space>
-				),
-			},
-		]
-	}, [isAdmin])
 
 	return (
-		<Table<User>
-			dataSource={data?.users}
-			loading={isLoading || isFetching}
-			columns={columns}
-			pagination={{
-				total: data?.total,
-				pageSize,
-				showSizeChanger: true,
-				onChange: (page, pageSize) => setPagination({ page, pageSize }),
-				pageSizeOptions: ["10", "20", "50"],
-				showTotal: (total) => `Total ${total} items`,
-			}}
-		/>
+		<div>
+			<Flex align="center" justify="space-between">
+				<Title level={1}>Users</Title>
+				<Button
+					type="primary"
+					onClick={() =>
+						setUserModal({ open: true, mode: "add", userId: null })
+					}
+				>
+					Cadastrar
+				</Button>
+			</Flex>
+			<UsersList
+				onEditClick={(userId: number) =>
+					setUserModal({ open: true, mode: "edit", userId })
+				}
+			/>
+			<UserFormModal
+				{...userModal}
+				onCancel={() => setUserModal((prev) => ({ ...prev, open: false }))}
+			/>
+		</div>
 	)
 }
