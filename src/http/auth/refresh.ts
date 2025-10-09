@@ -10,13 +10,10 @@ type RefreshResponse = {
 	refreshToken: string
 }
 
-export async function refresh({
-	refreshToken,
-	expiresInMins = 10,
-}: RefreshRequest) {
+export async function refresh(data: RefreshRequest) {
 	const resp = await dummyApi.post<RefreshResponse>("/auth/refresh", {
-		refreshToken,
-		expiresInMins,
+		...data,
+		expiresInMins: 10,
 	})
 	return resp.data
 }
