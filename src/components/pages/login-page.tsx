@@ -36,7 +36,7 @@ export default function LoginPage() {
 				<ThemeSwitcher />
 			</div>
 			<Content style={{ display: "grid", placeContent: "center" }}>
-				<Card title="Login" style={{ minWidth: "440px" }}>
+				<Card title="Login - Dummy Users" style={{ minWidth: "440px" }}>
 					{error && (
 						<Alert
 							message={getAxiosErrorMessage(error) || "Unknown error"}

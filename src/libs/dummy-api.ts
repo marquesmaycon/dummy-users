@@ -165,6 +165,7 @@ export type User = {
 			network: string
 		}
 		role: "admin" | "user" | "moderator"
+		isLocal?: boolean
 	}
 
 export type Pagination = {

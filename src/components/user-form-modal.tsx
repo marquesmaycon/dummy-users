@@ -46,7 +46,6 @@ export default function UserFormModal({
 
 	useEffect(() => {
 		if (isEdit && user && open) {
-			console.log(user)
 			const formattedUser = {
 				...user,
 				birthDate: user.birthDate ? dayjs(user.birthDate) : undefined,
