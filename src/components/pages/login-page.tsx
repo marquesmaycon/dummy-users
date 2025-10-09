@@ -1,5 +1,5 @@
 import { LoginOutlined } from "@ant-design/icons"
-import { Alert, Button, Card, Form, Input, Layout } from "antd"
+import { Alert, Button, Card, Form, Input, Layout, Spin } from "antd"
 import { useForm } from "antd/es/form/Form"
 import { Content } from "antd/es/layout/layout"
 import { useNavigate } from "react-router"
@@ -21,11 +21,15 @@ export default function LoginPage() {
 
 	const { mutateAsync: login, isPending, error } = useLogin()
 
-	useGuestGuard()
+	const { isLoading } = useGuestGuard()
 
 	const handleFinish = async (values: FieldType) => {
 		await login(values)
 		navigate("/dashboard/users")
+	}
+
+	if (isLoading) {
+		return <Spin fullscreen />
 	}
 
 	return (

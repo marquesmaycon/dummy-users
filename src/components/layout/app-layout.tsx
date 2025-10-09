@@ -1,5 +1,5 @@
 import { PoweroffOutlined } from "@ant-design/icons"
-import { Button, Divider, Flex, Layout, Typography } from "antd"
+import { Button, Divider, Flex, Layout, Spin, Typography } from "antd"
 import { Outlet } from "react-router"
 
 import { useAuthContext } from "../../contexts/auth-context"
@@ -13,7 +13,11 @@ const { Title, Text } = Typography
 export default function AppLayout() {
 	const { user, logout } = useAuthContext()
 
-	useAuthGuard()
+	const { isLoading } = useAuthGuard()
+
+	if (isLoading) {
+		return <Spin fullscreen />
+	}
 
 	return (
 		<Layout style={{ minHeight: "100vh" }}>

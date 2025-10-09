@@ -1,9 +1,10 @@
 import Cookies from "js-cookie"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
 export function useAuthGuard(redirectTo = "/login") {
 	const navigate = useNavigate()
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
 		const accessToken = Cookies.get("accessToken")
@@ -13,12 +14,17 @@ export function useAuthGuard(redirectTo = "/login") {
 
 		if (!isAuthenticated) {
 			navigate(redirectTo)
+		} else {
+			setIsLoading(false)
 		}
 	}, [navigate, redirectTo])
+
+	return { isLoading }
 }
 
 export function useGuestGuard(redirectTo = "/users") {
 	const navigate = useNavigate()
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
 		const accessToken = Cookies.get("accessToken")
@@ -28,8 +34,12 @@ export function useGuestGuard(redirectTo = "/users") {
 
 		if (isAuthenticated) {
 			navigate(redirectTo)
+		} else {
+			setIsLoading(false)
 		}
 	}, [navigate, redirectTo])
+
+	return { isLoading }
 }
 
 export function checkAuthStatus() {
