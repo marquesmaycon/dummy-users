@@ -1,7 +1,8 @@
 import Cookies from "js-cookie"
+
 import { dummyApi } from "../../libs/dummy-api"
 import { queryClient } from "../../libs/tanstack-query"
-import { me } from "../user/me"
+import { type MeResponse, me } from "../user/me"
 
 export type LoginRequest = {
 	username: string
@@ -30,11 +31,14 @@ export async function login(data: LoginRequest) {
 	Cookies.set("accessToken", accessToken, { path: "/" })
 	Cookies.set("refreshToken", refreshToken, { path: "/" })
 
-	// TO DO => ainda duplicando request
-	const myInfo = await me()
-	queryClient.setQueryData(["me"], myInfo)
-	
-	const isAllowed = myInfo.role === "admin" || myInfo.role === "user"
+	await queryClient.prefetchQuery({
+		queryKey: ["me"],
+		queryFn: me,
+	})
+
+	const meResp = queryClient.getQueryData<MeResponse>(["me"])
+
+	const isAllowed = meResp?.role === "admin" || meResp?.role === "user"
 
 	if (!isAllowed) {
 		throw new Error("Usuário não cadastrado no sistema")
