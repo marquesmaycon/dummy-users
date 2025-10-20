@@ -14,6 +14,16 @@ Sistema completo de gerenciamento de usuários que demonstra implementação de 
 
 ⚠️ **Importante**: As mutações (criar, editar, deletar) **não persistem na API** DummyJSON utilizada. As alterações são aplicadas apenas no **cache local** através do TanStack Query, simulando um comportamento real de aplicação.
 
+## 🔐 Login - usuários de teste disponíveis na [documentação da DummyJSON](https://dummyjson.com/docs/auth).
+Exemplos: 
+```
+Usuário: emilys
+Senha: emilyspass
+
+Usuário: michaelw
+Senha: michaelwpass
+```
+
 ## ✨ Principais Funcionalidades
 
 ### 🔐 **Autenticação Completa**
