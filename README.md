@@ -8,6 +8,10 @@
 [![TanStack Query](https://img.shields.io/badge/TanStack%20Query-5.90.2-FF4154?logo=react-query)](https://tanstack.com/query)
 [![Ant Design](https://img.shields.io/badge/Ant%20Design-5.27.4-0170FE?logo=antdesign)](https://ant.design/)
 
+## 🚀 Demo Online
+
+### 🌐 [VER PROJETO AO VIVO](https://dummy-users.mklly.com.br/login)
+
 ## 📖 Sobre o Projeto
 
 Sistema completo de gerenciamento de usuários que demonstra implementação de **autenticação**, **CRUD de usuários**, **gerenciamento de estado** e **boas práticas de desenvolvimento frontend**. 
