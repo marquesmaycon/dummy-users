@@ -1,6 +1,6 @@
-# 👥 Dummy Users - Sistema de Gerenciamento de Usuários
+# Dummy Users
 
-> 🚀 **Aplicação React moderna** desenvolvida para demonstrar boas práticas e padrões de desenvolvimento frontend.
+Dashboard de gerenciamento de usuários com autenticação, CRUD simulado e cache local usando React, TypeScript, TanStack Query, Ant Design e DummyJSON.
 
 [![React](https://img.shields.io/badge/React-19.1.1-61DAFB?logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript)](https://www.typescriptlang.org/)
@@ -8,117 +8,90 @@
 [![TanStack Query](https://img.shields.io/badge/TanStack%20Query-5.90.2-FF4154?logo=react-query)](https://tanstack.com/query)
 [![Ant Design](https://img.shields.io/badge/Ant%20Design-5.27.4-0170FE?logo=antdesign)](https://ant.design/)
 
-## 🚀 Demo Online
+## Demo
 
-### 🌐 [VER PROJETO AO VIVO](https://dummy-users.mklly.com.br/login)
+Projeto ao vivo: [dummy-users.mklly.com.br](https://dummy-users.mklly.com.br/login)
 
-## 📖 Sobre o Projeto
+## Sobre
 
-Sistema completo de gerenciamento de usuários que demonstra implementação de **autenticação**, **CRUD de usuários**, **gerenciamento de estado** e **boas práticas de desenvolvimento frontend**. 
+O Dummy Users é uma aplicação React para demonstrar um fluxo completo de gerenciamento de usuários em uma SPA moderna. O projeto inclui autenticação, rotas privadas, listagem paginada, visualização de perfil, criação, edição e exclusão de usuários.
 
-⚠️ **Importante**: As mutações (criar, editar, deletar) **não persistem na API** DummyJSON utilizada. As alterações são aplicadas apenas no **cache local** através do TanStack Query, simulando um comportamento real de aplicação.
+A aplicação usa a API pública da [DummyJSON](https://dummyjson.com/) como backend de demonstração. Como a API não persiste mutações de criação, edição e exclusão, essas ações são refletidas no cache local do TanStack Query para simular uma experiência real de produto.
 
-## 🔐 Login - usuários de teste disponíveis na [documentação da DummyJSON](https://dummyjson.com/docs/auth).
-Exemplos: 
-```
-Usuário: emilys
-Senha: emilyspass
+## Funcionalidades
 
-Usuário: michaelw
-Senha: michaelwpass
-```
+- Login com credenciais da DummyJSON.
+- Refresh token automático via interceptadores do Axios.
+- Proteção de rotas autenticadas.
+- Listagem paginada de usuários.
+- Visualização detalhada de perfil.
+- Criação, edição e exclusão de usuários com atualização de cache.
+- Tema claro e escuro persistente.
+- Feedback visual para carregamento, erro e ações do usuário.
 
-## ✨ Principais Funcionalidades
+## Stack
 
-### 🔐 **Autenticação Completa**
-- Login com credenciais
-- Refresh token automático
-- Logout e limpeza de sessão
+- **React 19** para construção da interface.
+- **TypeScript** para tipagem estática.
+- **Vite** como build tool e servidor de desenvolvimento.
+- **React Router 7** para roteamento da SPA.
+- **TanStack Query** para cache, sincronização e mutações.
+- **Axios** para requisições HTTP e interceptadores de autenticação.
+- **Ant Design** para componentes de UI.
+- **ESLint** e **Biome** para qualidade e padronização de código.
 
-### 👤 **Gestão de Usuários**
-- ✅ Listagem paginada de usuários
-- ✅ Visualização detalhada de perfil
-- ✅ Criação de novos usuários
-- ✅ Edição de dados existentes
-- ✅ Exclusão com confirmação
+## Arquitetura
 
-### 🎨 **Interface & UX**
-- Design com Ant Design
-- Tema claro/escuro com toggle
-- Modais para formulários
-- Feedback visual para ações
-- Loading states e tratamento de erros
-
-## 🛠️ Stack Tecnológica
-
-### **Frontend Core**
-- **React 19** - Biblioteca principal
-- **TypeScript** - Tipagem estática
-- **Vite** - Build tool e dev server
-- **React Router 7** - Roteamento SPA
-
-### **Gerenciamento de Estado & API**
-- **TanStack Query** - Cache, sincronização e mutações
-- **Axios** - Cliente HTTP com interceptadores
-- **js-cookie** - Gestão de cookies para auth
-
-### **UI & Styling**
-- **Ant Design** - Biblioteca de componentes
-
-### **Qualidade de Código**
-- **ESLint** - Análise estática de código
-- **Biome** - Formatação e linting
-- **TypeScript Strict Mode** - Tipagem rigorosa
-
-## 🏗️ Arquitetura do Projeto
-
-```
+```txt
 src/
 ├── components/          # Componentes reutilizáveis
-│   ├── layout/         # Layout da aplicação
-│   └── pages/          # Componentes de página
-├── contexts/           # Contexts React (Auth, Theme)
-├── hooks/              # Custom hooks
-├── http/               # Camada de API
-│   ├── auth/          # Endpoints de autenticação
-│   └── user/          # Endpoints de usuários
-├── libs/               # Configurações de bibliotecas
-├── providers/          # Providers React
-├── utils/              # Funções utilitárias
-└── routes.tsx          # Configuração de rotas
+│   ├── layout/          # Layout da aplicação
+│   └── pages/           # Páginas da aplicação
+├── contexts/            # Contextos React
+├── hooks/               # Custom hooks
+├── http/                # Camada de API
+│   ├── auth/            # Endpoints de autenticação
+│   └── user/            # Endpoints de usuários
+├── libs/                # Configurações de bibliotecas
+├── providers/           # Providers globais
+├── utils/               # Funções utilitárias
+└── routes.tsx           # Configuração de rotas
 ```
 
-## 🚀 Como Executar
+## Como executar
 
-### **Pré-requisitos**
-- Node.js 18+
-- npm ou yarn
+### Pré-requisitos
 
-### **Instalação**
+- Node.js 18 ou superior.
+- npm.
+
+### Instalação
+
 ```bash
-# Clone o repositório
 git clone <repository-url>
-
-# Instale as dependências
+cd dummy-users
 npm install
-
-# Execute em modo de desenvolvimento
 npm run dev
 ```
 
-### **Comandos Disponíveis**
+Depois, acesse a URL exibida no terminal pelo Vite.
+
+## Scripts disponíveis
+
 ```bash
-npm run dev      # Servidor de desenvolvimento
-npm run build    # Build para produção
-npm run preview  # Preview da build
-npm run lint     # Análise de código
+npm run dev      # Inicia o servidor de desenvolvimento
+npm run build    # Gera a build de produção
+npm run preview  # Visualiza a build localmente
+npm run lint     # Executa a análise de código
 ```
 
-## 🔑 Credenciais de Teste
+## Credenciais de teste
 
-Para fazer login na aplicação, use qualquer uma das credenciais disponíveis na [documentação da DummyJSON](https://dummyjson.com/docs/auth):
+Use qualquer credencial disponível na [documentação de autenticação da DummyJSON](https://dummyjson.com/docs/auth).
 
-```
+Exemplos:
+
+```txt
 Usuário: emilys
 Senha: emilyspass
 
@@ -126,47 +99,32 @@ Usuário: michaelw
 Senha: michaelwpass
 ```
 
-## 🌐 API & Limitações
+## Limitações da API
 
-A aplicação utiliza a **DummyJSON API** como backend de demonstração:
+Funciona diretamente pela DummyJSON:
 
-### ✅ **Funciona Normalmente**
-- Autenticação e refresh tokens
-- Listagem e busca de usuários
-- Visualização de perfis
+- Autenticação.
+- Refresh token.
+- Listagem de usuários.
+- Visualização de perfil.
 
-### ⚠️ **Simulado via Cache Local**
-- Criação de usuários
-- Edição de dados
-- Exclusão de registros
+Simulado no cache local:
 
-> 💡 **Nota**: As mutações são aplicadas otimisticamente no cache do TanStack Query, proporcionando uma experiência fluida mesmo sem persistência real na API.
+- Criação de usuários.
+- Edição de usuários.
+- Exclusão de usuários.
 
-## 🎯 Destaques Técnicos
+As mutações são aplicadas no cache do TanStack Query para manter a interface responsiva, mesmo sem persistência real no backend público.
 
-### **Otimizações de Performance**
-- ⚡ Lazy loading de componentes
-- 🔄 Cache inteligente com TanStack Query
-- 📊 Paginação eficiente
-- 🎣 Custom hooks para reutilização
+## Destaques técnicos
 
-### **Experiência do Usuário**
-- 🌙 Tema claro/escuro persistente
-- ⏳ Estados de loading elegantes
-- 🚨 Tratamento de erros
-
-### **Segurança & Autenticação**
-- 🔐 Tokens JWT com renovação automática
-- 🛡️ Proteção de rotas privadas
-- 🍪 Gestão segura de cookies
-- 🔄 Interceptadores para requests
-
-### **Desenvolvimento**
-- 🔧 TypeScript para type safety
-- 📏 ESLint + Biome para qualidade
-- 🏗️ Arquitetura modular e escalável
-- 🧪 Estrutura preparada para testes
-
+- Arquitetura modular separando componentes, hooks, providers, contextos e camada HTTP.
+- Cache de listagem e detalhe de usuários com TanStack Query.
+- Atualização local de dados após mutações.
+- Interceptadores Axios para anexar token e renovar sessão.
+- Tema claro/escuro com persistência.
+- Componentização baseada em Ant Design.
+- TypeScript em modo estrito.
 
 ---
 
@@ -176,11 +134,10 @@ A aplicação utiliza a **DummyJSON API** como backend de demonstração:
   <strong>Maycon Marques</strong>
   <br/>
   <br/>
-  
+
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mayconhenrique/)
   [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white)](https://github.com/marquesmaycon)
   [![Email](https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:mayconmarquesh@gmail.com)
 
   ### Feito com ❤️ e muita 🎵
 </div>
-
